@@ -53,29 +53,29 @@
                 android:layout_height="150dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/music_dna_icon" />
+
             <TextView
                 android:id="@+id/about_music_dna_title"
-                android:layout_below="@id/about_mdg_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/about_mdg_logo"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
-                android:text="Music DNA"
-                android:textSize="18sp"
+                android:text="Music Box"
                 android:textAlignment="center"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/about_version_text"
-                android:layout_below="@id/about_music_dna_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/about_music_dna_title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8dp"
-                android:text="Version 1.1.0"
-                android:textSize="11sp"
                 android:textAlignment="center"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/about_brought_by"
@@ -93,12 +93,10 @@
 
             <ImageView
                 android:id="@+id/about_music_dna_logo"
-                android:layout_below="@id/about_brought_by"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/logo"
-                />
+                android:layout_below="@id/about_brought_by"
+                android:layout_centerHorizontal="true" />
 
 
             <TextView

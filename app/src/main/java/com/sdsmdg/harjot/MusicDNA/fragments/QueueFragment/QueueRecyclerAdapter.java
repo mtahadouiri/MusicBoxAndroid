@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sdsmdg.harjot.MusicDNA.customviews.CustomPlayingIndicator;
+import com.sdsmdg.harjot.MusicDNA.imageLoader.ImageLoader;
 import com.sdsmdg.harjot.MusicDNA.itemtouchhelpers.ItemTouchHelperAdapter;
 import com.sdsmdg.harjot.MusicDNA.itemtouchhelpers.ItemTouchHelperViewHolder;
 import com.sdsmdg.harjot.MusicDNA.activities.HomeActivity;
@@ -22,7 +23,6 @@ import com.sdsmdg.harjot.MusicDNA.models.Track;
 import com.sdsmdg.harjot.MusicDNA.models.UnifiedTrack;
 import com.sdsmdg.harjot.MusicDNA.fragments.PlayerFragment.PlayerFragment;
 import com.sdsmdg.harjot.MusicDNA.R;
-import com.sdsmdg.harjot.MusicDNA.imageloader.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

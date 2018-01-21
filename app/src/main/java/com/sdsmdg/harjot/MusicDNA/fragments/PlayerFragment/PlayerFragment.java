@@ -44,6 +44,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.sdsmdg.harjot.MusicDNA.activities.HomeActivity;
 import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
 import com.sdsmdg.harjot.MusicDNA.Config;
+import com.sdsmdg.harjot.MusicDNA.imageLoader.ImageLoader;
 import com.sdsmdg.harjot.MusicDNA.lyrics.Lyrics;
 import com.sdsmdg.harjot.MusicDNA.snappyrecyclerview.CustomAdapter;
 import com.sdsmdg.harjot.MusicDNA.snappyrecyclerview.SnappyRecyclerView;
@@ -57,7 +58,6 @@ import com.sdsmdg.harjot.MusicDNA.notificationmanager.AudioPlayerBroadcastReceiv
 import com.sdsmdg.harjot.MusicDNA.R;
 import com.sdsmdg.harjot.MusicDNA.utilities.DownloadThread;
 import com.sdsmdg.harjot.MusicDNA.visualizers.VisualizerView;
-import com.sdsmdg.harjot.MusicDNA.imageloader.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
 import com.wang.avi.AVLoadingIndicatorView;

@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sdsmdg.harjot.MusicDNA.imageLoader.ImageLoader;
 import com.sdsmdg.harjot.MusicDNA.models.Playlist;
 import com.sdsmdg.harjot.MusicDNA.models.UnifiedTrack;
 import com.sdsmdg.harjot.MusicDNA.R;
 import com.sdsmdg.harjot.MusicDNA.activities.SplashActivity;
-import com.sdsmdg.harjot.MusicDNA.imageloader.ImageLoader;
 
 import java.util.List;
 

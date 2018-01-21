@@ -21,13 +21,13 @@ import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
 import com.sdsmdg.harjot.MusicDNA.custombottomsheets.CustomGeneralBottomSheetDialog;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalTrackRecyclerAdapter;
 import com.sdsmdg.harjot.MusicDNA.activities.HomeActivity;
+import com.sdsmdg.harjot.MusicDNA.imageLoader.ImageLoader;
 import com.sdsmdg.harjot.MusicDNA.models.LocalTrack;
 import com.sdsmdg.harjot.MusicDNA.models.UnifiedTrack;
 import com.sdsmdg.harjot.MusicDNA.MusicDNAApplication;
 import com.sdsmdg.harjot.MusicDNA.R;
 import com.sdsmdg.harjot.MusicDNA.activities.SplashActivity;
 import com.sdsmdg.harjot.MusicDNA.utilities.CommonUtils;
-import com.sdsmdg.harjot.MusicDNA.imageloader.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
 

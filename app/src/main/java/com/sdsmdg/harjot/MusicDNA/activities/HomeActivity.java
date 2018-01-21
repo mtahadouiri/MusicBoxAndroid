@@ -86,6 +86,7 @@ import com.sdsmdg.harjot.MusicDNA.fragments.FavouritesFragment.FavouritesFragmen
 import com.sdsmdg.harjot.MusicDNA.fragments.FolderContentFragment.FolderContentFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.AllFoldersFragment.FolderFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.RecentlyAddedSongsFragment;
+import com.sdsmdg.harjot.MusicDNA.fragments.MenuFragment.MenuHomeFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.NewPlaylistFragment.NewPlaylistFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.QueueFragment.QueueFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.RecentsFragment.RecentsFragment;
@@ -135,7 +136,7 @@ import com.sdsmdg.harjot.MusicDNA.utilities.comparators.LocalMusicComparator;
 import com.sdsmdg.harjot.MusicDNA.utilities.FileUtils;
 import com.sdsmdg.harjot.MusicDNA.utilities.MediaCacheUtils;
 import com.sdsmdg.harjot.MusicDNA.visualizers.VisualizerView;
-import com.sdsmdg.harjot.MusicDNA.imageloader.ImageLoader;
+import com.sdsmdg.harjot.MusicDNA.imageLoader.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
@@ -182,6 +183,7 @@ public class HomeActivity extends AppCompatActivity
         NewPlaylistFragment.NewPlaylistFragmentCallbackListener,
         HeadSetReceiver.onHeadsetEventListener,
         EditLocalSongFragment.EditFragmentCallbackListener,
+        MenuHomeFragment.OnMenuHomeSelectedListener,
         ServiceCallbacks {
 
     public static List<LocalTrack> localTrackList = new ArrayList<>();
@@ -370,6 +372,8 @@ public class HomeActivity extends AppCompatActivity
     public static boolean isNewPlaylistVisible = false;
     public static boolean isAboutVisible = false;
     public static boolean isEditVisible = false;
+    public static boolean isMenuVisible = false;
+
 
     public boolean isPlayerTransitioning = false;
 
@@ -414,6 +418,7 @@ public class HomeActivity extends AppCompatActivity
     int timerTimeOutDuration = 0;
     List<String> minuteList;
     Handler sleepHandler;
+    ImageView menuBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -618,7 +623,7 @@ public class HomeActivity extends AppCompatActivity
         recentBanner = (ImageView) findViewById(R.id.recentBanner);
         folderBanner = (ImageView) findViewById(R.id.folderBanner);
         savedDNABanner = (ImageView) findViewById(R.id.savedDNABanner);
-
+        menuBanner= (ImageView)findViewById(R.id.menuBanner);
         localBannerPlayAll = (ImageView) findViewById(R.id.local_banner_play_all);
 
         localBanner.setOnClickListener(new View.OnClickListener() {
@@ -649,6 +654,12 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 showFragment("allSavedDNAs");
+            }
+        });
+        menuBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment("menu");
             }
         });
 
@@ -1046,6 +1057,11 @@ public class HomeActivity extends AppCompatActivity
         if (rFrag != null && rFrag.rtAdpater != null) {
             rFrag.rtAdpater.notifyDataSetChanged();
         }
+
+    }
+
+    @Override
+    public void OnMenuHomeSelected(Uri uri) {
 
     }
 
@@ -1757,6 +1773,8 @@ public class HomeActivity extends AppCompatActivity
         if (flmFrag != null) {
             lFrag = (LocalMusicFragment) flmFrag.getFragmentByPosition(0);
         }
+        MenuHomeFragment mhFrag = (MenuHomeFragment) fragMan.findFragmentByTag("menu");
+
         QueueFragment qFrag = (QueueFragment) fragMan.findFragmentByTag("queue");
         EqualizerFragment eqFrag = (EqualizerFragment) fragMan.findFragmentByTag("equalizer");
         ViewSavedDNA vsdFrag = (ViewSavedDNA) fragMan.findFragmentByTag("allSavedDNAs");
@@ -1825,7 +1843,11 @@ public class HomeActivity extends AppCompatActivity
                 } else if (isQueueVisible) {
                     hideFragment("queue");
                     setTitle("Music DNA");
-                } else if (isStreamVisible) {
+                }
+                else if (isMenuVisible) {
+                    hideFragment("menu");
+                    setTitle("Music DNA");
+                }else if (isStreamVisible) {
                     hideFragment("stream");
                     setTitle("Music DNA");
                 } else if (isPlaylistVisible) {
@@ -3970,7 +3992,26 @@ public class HomeActivity extends AppCompatActivity
                     .show(newFragment)
                     .addToBackStack(null)
                     .commitAllowingStateLoss();
-        } else if (type.equals("queue") && !isQueueVisible) {
+        }
+        else if (type.equals("menu") && !isLocalVisible) {
+            navigationView.setCheckedItem(R.id.nav_local);
+            isMenuVisible = true;
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            MenuHomeFragment newFragment = (MenuHomeFragment) fm.findFragmentByTag("menuHome");
+            if (newFragment == null) {
+                newFragment = new MenuHomeFragment();
+            }
+            fm.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_left,
+                            R.anim.slide_right,
+                            R.anim.slide_left,
+                            R.anim.slide_right)
+                    .add(R.id.fragContainer, newFragment, "menuHome")
+                    .show(newFragment)
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss();
+        }
+        else if (type.equals("queue") && !isQueueVisible) {
             hideAllFrags();
             isQueueVisible = true;
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
