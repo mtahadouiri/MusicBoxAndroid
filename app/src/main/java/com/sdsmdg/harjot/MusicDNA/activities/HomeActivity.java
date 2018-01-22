@@ -1864,6 +1864,9 @@ public class HomeActivity extends AppCompatActivity
                 } else if (isMenuVisible) {
                     hideFragment("menu");
                     setTitle("Music DNA");
+                }else if (isMenuDetailsVisible) {
+                    hideFragment("menudetails");
+                    setTitle("Menu");
                 } else if (isStreamVisible) {
                     hideFragment("stream");
                     setTitle("Music DNA");
@@ -4314,7 +4317,18 @@ public class HomeActivity extends AppCompatActivity
                         .remove(frag)
                         .commitAllowingStateLoss();
             }
-        } else if (type.equals("menu")) {
+        }else if (type.equals("menudetails")) {
+            isMenuDetailsVisible = false;
+            setTitle("Menu");
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            android.support.v4.app.Fragment frag = fm.findFragmentByTag("menudetails");
+            if (frag != null) {
+                fm.beginTransaction()
+                        .remove(frag)
+                        .commitAllowingStateLoss();
+            }
+        }
+        else if (type.equals("menu")) {
             isMenuVisible = false;
             setTitle("Music DNA");
             navigationView.setCheckedItem(R.id.nav_home);
@@ -4325,16 +4339,7 @@ public class HomeActivity extends AppCompatActivity
                         .remove(frag)
                         .commitAllowingStateLoss();
             }
-        } else if (type.equals("menudetails")) {
-            isMenuDetailsVisible = false;
-            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-            android.support.v4.app.Fragment frag = fm.findFragmentByTag("menudetails");
-            if (frag != null) {
-                fm.beginTransaction()
-                        .remove(frag)
-                        .commitAllowingStateLoss();
-            }
-        } else if (type.equals("queue")) {
+        }  else if (type.equals("queue")) {
             isQueueVisible = false;
             navigationView.setCheckedItem(R.id.nav_home);
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
