@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -36,12 +37,14 @@ import com.sdsmdg.harjot.MusicDNA.activities.SplashActivity;
 import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
 import com.sdsmdg.harjot.MusicDNA.custombottomsheets.CustomLocalBottomSheetDialog;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.AlbumFragment;
+import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.AlbumRecyclerAdapter;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.ArtistFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalMusicFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalMusicViewPagerFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalTrackRecyclerAdapter;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.RecentlyAddedSongsFragment;
 import com.sdsmdg.harjot.MusicDNA.models.LocalTrack;
+import com.sdsmdg.harjot.MusicDNA.models.ProductType;
 import com.sdsmdg.harjot.MusicDNA.models.UnifiedTrack;
 import com.sdsmdg.harjot.MusicDNA.utilities.CommonUtils;
 
@@ -62,7 +65,14 @@ public class MenuHomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public ProductTypesRecyclerAdapter abAdapter;
 
+    public RecyclerView rv;
+
+    public MenuHomeFragment.onProductTypeCLickListener mCallback;
+    GridLayoutManager glManager;
+
+    View bottomMarginLayout;
     ImageView backBtn;
     public ImageView searchIcon;
     public TextView fragTitle;
@@ -75,9 +85,11 @@ public class MenuHomeFragment extends Fragment {
     Context ctx;
     HomeActivity activity;
 
-    private OnMenuHomeSelectedListener mCallback;
     private ShowcaseView showCase;
 
+    public interface onProductTypeCLickListener {
+        public void onProductTypeCLick();
+    }
     public MenuHomeFragment() {
         // Required empty public constructor
     }
@@ -127,8 +139,7 @@ public class MenuHomeFragment extends Fragment {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ctx,HomeActivity.class);
-                startActivity(i);
+                getActivity().onBackPressed();
             }
         });
 
@@ -178,6 +189,34 @@ public class MenuHomeFragment extends Fragment {
         });
 
 
+        rv = (RecyclerView) view.findViewById(R.id.albums_recycler);
+        abAdapter = new ProductTypesRecyclerAdapter(ProductType.ProtoProdyctType(), getContext());
+        glManager = new GridLayoutManager(getContext(), 2);
+        rv.setLayoutManager(glManager);
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setAdapter(abAdapter);
+
+        rv.addOnItemTouchListener(new ClickItemTouchListener(rv) {
+            @Override
+            public boolean onClick(RecyclerView parent, View view, int position, long id) {
+                HomeActivity.tempMenu = ProductType.ProtoProdyctType().get(position);
+                mCallback.onProductTypeCLick();
+                return true;
+            }
+
+            @Override
+            public boolean onLongClick(RecyclerView parent, View view, int position, long id) {
+                return false;
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
+
+
     }
 
     /**
@@ -199,9 +238,17 @@ public class MenuHomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        try {
+            mCallback = (MenuHomeFragment.onProductTypeCLickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
 
     }
-
+    public void updateAdapter() {
+        if (abAdapter != null)
+            abAdapter.notifyDataSetChanged();
+    }
 
 }

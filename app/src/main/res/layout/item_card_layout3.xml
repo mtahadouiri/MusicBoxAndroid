@@ -42,11 +42,11 @@
         <TextView
             android:id="@+id/card_artist"
             android:layout_width="match_parent"
-            android:layout_height="19dp"
+            android:layout_height="38dp"
             android:layout_below="@+id/card_title"
             android:layout_marginTop="-5dp"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="Artist"
             android:textAlignment="center"
             android:textColor="#EEE"
