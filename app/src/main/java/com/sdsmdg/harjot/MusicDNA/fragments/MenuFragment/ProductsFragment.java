@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +26,9 @@ import com.sdsmdg.harjot.MusicDNA.R;
 import com.sdsmdg.harjot.MusicDNA.activities.HomeActivity;
 import com.sdsmdg.harjot.MusicDNA.activities.SplashActivity;
 import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
+import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalMusicFragment;
+import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalTrackRecyclerAdapter;
+import com.sdsmdg.harjot.MusicDNA.models.Product;
 import com.sdsmdg.harjot.MusicDNA.models.ProductType;
 
 /**
@@ -39,12 +44,15 @@ public class ProductsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public ProductTypesRecyclerAdapter abAdapter;
+    ProductRecyclerAdapter adapter;
+    ProductsFragment.onProductAddToCartListener mCallback;
 
-    public RecyclerView rv;
 
-    public ProductsFragment.onProductAddToCartListener mCallback;
-    GridLayoutManager glManager;
+    RecyclerView lv;
+    LinearLayoutManager mLayoutManager2;
+
+    FloatingActionButton shuffleFab;
+
 
     View bottomMarginLayout;
     ImageView backBtn;
@@ -163,31 +171,12 @@ public class ProductsFragment extends Fragment {
         });
 
 
-        rv = (RecyclerView) view.findViewById(R.id.albums_recycler);
-        abAdapter = new ProductTypesRecyclerAdapter(ProductType.ProtoProdyctType(), getContext());
-        glManager = new GridLayoutManager(getContext(), 2);
-        rv.setLayoutManager(glManager);
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(abAdapter);
-
-        rv.addOnItemTouchListener(new ClickItemTouchListener(rv) {
-            @Override
-            public boolean onClick(RecyclerView parent, View view, int position, long id) {
-                HomeActivity.tempMenu = ProductType.ProtoProdyctType().get(position);
-                mCallback.onProductAddToCartClicked();
-                return true;
-            }
-
-            @Override
-            public boolean onLongClick(RecyclerView parent, View view, int position, long id) {
-                return false;
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
+        lv = (RecyclerView) view.findViewById(R.id.localMusicList);
+        adapter = new ProductRecyclerAdapter(Product.ProtoProducts(), getContext());
+        mLayoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        lv.setLayoutManager(mLayoutManager2);
+        lv.setItemAnimator(new DefaultItemAnimator());
+        lv.setAdapter(adapter);
 
 
 

@@ -93,15 +93,14 @@ public class Product {
         lstProducts.add(p1);
          p1 = new Product("DOUBLE QUARTER POUND KING™", "https://www.bk.com/sites/default/files/02568-2%20BK_Web_DblQtrPndKing_300x270px_CR.png", "Burger", "Featuring more than ½ lb.* of flame-grilled 100% beef, topped with all of our classic favorites: American cheese, freshly sliced onions, zesty pickles, ketchup, & mustard all on a toasted sesame seed bun.", 15, 1);
         lstProducts.add(p1);
-        p1 = new Product("BBQ BACON WHOPPER® SANDWICH", "https://www.bk.com/sites/default/files/02568-2%20BK_Web_DblQtrPndKing_300x270px_CR.png", "Burger", "Featuring more than ½ lb.* of flame-grilled 100% beef, topped with all of our classic favorites: American cheese, freshly sliced onions, zesty pickles, ketchup, & mustard all on a toasted sesame seed bun.", 15, 1);
+        p1 = new Product("BBQ BACON WHOPPER® SANDWICH", "https://www.bk.com/sites/default/files/Thumb_0004_BBQ_Bacon_Whopper_0.jpg", "Burger", "Featuring more than ½ lb.* of flame-grilled 100% beef, topped with all of our classic favorites: American cheese, freshly sliced onions, zesty pickles, ketchup, & mustard all on a toasted sesame seed bun.", 15, 1);
         lstProducts.add(p1);
-         p1 = new Product("RODEO® KING™", "https://www.bk.com/sites/default/files/02109-2%20BK_Web_RodeoKing_500x540px.png", "Burger", "Flame-grilled to perfection.", 14, 1);
+         p1 = new Product("RODEO® KING™", "https://www.bk.com/sites/default/files/02109-2%20BK_Web_RodeoKing_500x540px.png", "Burger", "Flame-grilled to perfection.", 18, 1);
         lstProducts.add(p1);
-         p1 = new Product("", "", "", "", 5, 1);
+        p1 = new Product("WHOPPER® SANDWICH", "https://www.bk.com/sites/default/files/02200-1-BK_Web_WHOPPER_500x540px_CR_R%255b8%255d.png", "Burger", "America's favorite burger®.", 17, 1);
         lstProducts.add(p1);
-         p1 = new Product("", "", "", "", 5, 1);
+        p1 = new Product("BBQ BACON WHOPPER® SANDWICH", "https://www.bk.com/sites/default/files/BC-Whopper-detail.png", "Burger", "Enjoy the BBQ Flavor.\n", 17, 1);
         lstProducts.add(p1);
-
 
         return lstProducts;
     }

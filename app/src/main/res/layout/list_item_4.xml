@@ -11,7 +11,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/row_item_holder_2"
+        android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
@@ -44,7 +44,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@+id/row_item_holder_2"
+        android:layout_below="@+id/price"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"

@@ -11,16 +11,14 @@
 
     <ImageView
         android:id="@+id/img_2"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="10dp"
-        android:background="#222"
         android:scaleType="centerCrop" />
 
     <LinearLayout
-        android:id="@+id/row_item_holder_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -34,22 +32,34 @@
             android:id="@+id/title_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:text="Title"
             android:textColor="#FFF"
-            android:textSize="14dp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/url_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:text="Artist"
             android:textColor="#EEE"
-            android:textSize="11dp" />
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#DDD"
+            android:textSize="14sp"
+            />
+        <Button
+            android:layout_marginTop="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#EEE"
+            android:background="#222"
+            android:text="Add to cart"/>
     </LinearLayout>
 
     <View
