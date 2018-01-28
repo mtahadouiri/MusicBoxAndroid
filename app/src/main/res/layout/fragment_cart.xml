@@ -50,7 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="AAAAAAAA"
         android:layout_above="@+id/confirmCommandAdd"
         android:layout_marginBottom="12dp"
         android:textColor="#FFFFFF"

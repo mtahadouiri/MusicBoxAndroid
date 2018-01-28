@@ -4426,7 +4426,7 @@ public class HomeActivity extends AppCompatActivity
                         .commitAllowingStateLoss();
             }
         } else if (type.equals("cart")) {
-            isMenuVisible = false;
+            isCartVisible = false;
             setTitle("Cart");
             navigationView.setCheckedItem(R.id.nav_home);
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
