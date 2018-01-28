@@ -25,9 +25,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -143,9 +145,16 @@ import com.sdsmdg.harjot.MusicDNA.visualizers.VisualizerView;
 import com.sdsmdg.harjot.MusicDNA.imageLoader.ImageLoader;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1874,7 +1883,7 @@ public class HomeActivity extends AppCompatActivity
                 } else if (isMenuVisible) {
                     hideFragment("menu");
                     setTitle("Music DNA");
-                }else if (isMenuDetailsVisible) {
+                } else if (isMenuDetailsVisible) {
                     hideFragment("menudetails");
                     setTitle("Menu");
                 } else if (isStreamVisible) {
@@ -3789,7 +3798,13 @@ public class HomeActivity extends AppCompatActivity
                             plFrag.dataChanged();
                         }
                         new SavePlaylists().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
                         dialog.dismiss();
+                        try {
+                            transferPlaylist(pl.getSongList());
+                        } catch (IOException e) {
+                            Log.d("error",e.getMessage());
+                        }
                         onBackPressed();
                     }
                 }
@@ -3797,6 +3812,49 @@ public class HomeActivity extends AppCompatActivity
         });
 
         dialog.show();
+
+    }
+
+    public void transferPlaylist(final List<UnifiedTrack> playList) throws IOException {
+        Thread thread = new Thread(new Runnable(){
+            public void run() {
+                try {
+                    Log.d("Connecting to server","...");
+                    for (UnifiedTrack t :playList) {
+                        Socket sock = new Socket("10.0.2.2", 13267);
+                        OutputStream os = sock.getOutputStream();
+                        DataOutputStream dos = new DataOutputStream(os);
+                        Log.d("Path",t.getLocalTrack().getPath());
+                        // sendfile
+                        File myFile = new File(t.getLocalTrack().getPath());
+                        byte[] mybytearray = new byte[(int) myFile.length()];
+
+                        FileInputStream fis = new FileInputStream(myFile);
+                        BufferedInputStream bis = new BufferedInputStream(fis);
+                        DataInputStream dis = new DataInputStream(bis);
+                        dis.readFully(mybytearray, 0, mybytearray.length);
+
+
+                        // os.write(mybytearray, 0, mybytearray.length);
+
+                        // os.flush();
+
+
+                        dos.writeUTF(myFile.getName());
+                        dos.writeLong(mybytearray.length);
+                        dos.write(mybytearray, 0, mybytearray.length);
+                        dos.flush();
+                        sock.close();
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
 
     }
 
@@ -4060,6 +4118,7 @@ public class HomeActivity extends AppCompatActivity
         else if (type.equals("menudetails") && !isLocalVisible) {
             navigationView.setCheckedItem(R.id.nav_local);
             isMenuDetailsVisible = true;
+            isMenuVisible = false;
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
             ProductsFragment newFragment = (ProductsFragment) fm.findFragmentByTag("menudetails");
             if (newFragment == null) {
@@ -4336,7 +4395,7 @@ public class HomeActivity extends AppCompatActivity
     public void hideFragment(String type) {
         if (type.equals("local")) {
             isLocalVisible = false;
-            setTitle("Music DNA");
+            setTitle("Music Box");
             navigationView.setCheckedItem(R.id.nav_home);
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
             android.support.v4.app.Fragment frag = fm.findFragmentByTag("local");
@@ -4345,7 +4404,7 @@ public class HomeActivity extends AppCompatActivity
                         .remove(frag)
                         .commitAllowingStateLoss();
             }
-        }else if (type.equals("menudetails")) {
+        } else if (type.equals("menudetails")) {
             isMenuDetailsVisible = false;
             setTitle("Menu");
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
@@ -4366,7 +4425,7 @@ public class HomeActivity extends AppCompatActivity
                         .remove(frag)
                         .commitAllowingStateLoss();
             }
-        }  else if (type.equals("cart")) {
+        } else if (type.equals("cart")) {
             isMenuVisible = false;
             setTitle("Cart");
             navigationView.setCheckedItem(R.id.nav_home);
@@ -4742,6 +4801,7 @@ public class HomeActivity extends AppCompatActivity
             return null;
         }
     }
+
 
     public static class SaveEqualizer extends AsyncTask<Void, Void, Void> {
 
