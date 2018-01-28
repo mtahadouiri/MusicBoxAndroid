@@ -108,6 +108,7 @@ import com.sdsmdg.harjot.MusicDNA.adapters.horizontalrecycleradapters.LocalTrack
 import com.sdsmdg.harjot.MusicDNA.adapters.horizontalrecycleradapters.PlayListsHorizontalAdapter;
 import com.sdsmdg.harjot.MusicDNA.adapters.horizontalrecycleradapters.RecentsListHorizontalAdapter;
 import com.sdsmdg.harjot.MusicDNA.adapters.horizontalrecycleradapters.StreamTracksHorizontalAdapter;
+import com.sdsmdg.harjot.MusicDNA.helper.SessionManager;
 import com.sdsmdg.harjot.MusicDNA.interfaces.ServiceCallbacks;
 import com.sdsmdg.harjot.MusicDNA.interfaces.StreamService;
 import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.AlbumFragment;
@@ -157,6 +158,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -442,9 +444,32 @@ public class HomeActivity extends AppCompatActivity
     Handler sleepHandler;
     ImageView menuBanner;
 
+    private com.sdsmdg.harjot.MusicDNA.helper.SQLiteHandler database;
+    private SessionManager session;
+    String pseudo;
+    String email;
+    public static int idUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("USER", 0);
+        idUser = sharedPreferences.getInt("id",15);
+
+        database = new com.sdsmdg.harjot.MusicDNA.helper.SQLiteHandler(getApplicationContext());
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+        // Fetching user details from sqlite
+        HashMap<String, String> user = database.getUserDetails();
+        pseudo = user.get("pseudo");
+        email = user.get("email");
+        Log.d("PSEUDO !  ", pseudo);
+
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -5210,5 +5235,15 @@ public class HomeActivity extends AppCompatActivity
                     imgLoader.DisplayImage(ut.getStreamTrack().getArtworkURL(), imgView[i]);
             }
         }
+    }
+    private void logoutUser() {
+        session.setLogin(false);
+
+        database.deleteUsers();
+
+        // Launching the login activity
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
