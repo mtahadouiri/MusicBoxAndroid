@@ -1,22 +1,22 @@
-package com.sdsmdg.harjot.MusicDNA.fragments.MenuFragment;
+package com.sdsmdg.harjot.MusicDNA.fragments.CartFragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,40 +25,32 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.sdsmdg.harjot.MusicDNA.R;
 import com.sdsmdg.harjot.MusicDNA.activities.HomeActivity;
 import com.sdsmdg.harjot.MusicDNA.activities.SplashActivity;
-import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
-import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalMusicFragment;
-import com.sdsmdg.harjot.MusicDNA.fragments.LocalMusicFragments.LocalTrackRecyclerAdapter;
+import com.sdsmdg.harjot.MusicDNA.fragments.MenuFragment.ProductRecyclerAdapter;
+import com.sdsmdg.harjot.MusicDNA.fragments.MenuFragment.ProductsFragment;
+import com.sdsmdg.harjot.MusicDNA.models.Cart;
 import com.sdsmdg.harjot.MusicDNA.models.Product;
-import com.sdsmdg.harjot.MusicDNA.models.ProductType;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProductsFragment.onProductAddToCartListener} interface
- * to handle interaction events.
- * Use the {@link ProductsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ProductsFragment extends Fragment {
+import static com.sdsmdg.harjot.MusicDNA.SQLiteHandler.paymentPrix;
+
+public class CartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ProductRecyclerAdapter adapter;
+
+    CartRecyclerAdapter adapter;
     ProductsFragment.onProductAddToCartListener mCallback;
 
 
     RecyclerView lv;
     LinearLayoutManager mLayoutManager2;
 
-    FloatingActionButton shuffleFab;
-
-
     View bottomMarginLayout;
     ImageView backBtn;
     public ImageView searchIcon;
-    public TextView fragTitle;
-    public EditText searchBox;
+    public TextView fragTitle,totalP;
+    public Button confirmCommandBtn;
+
 
     public boolean isSearchboxVisible = false;
     // TODO: Rename and change types of parameters
@@ -70,7 +62,7 @@ public class ProductsFragment extends Fragment {
     private ShowcaseView showCase;
 
 
-    public ProductsFragment() {
+    public CartFragment() {
         // Required empty public constructor
     }
 
@@ -105,15 +97,15 @@ public class ProductsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_products, container, false);
+        return inflater.inflate(R.layout.fragment_cart, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        totalP = (TextView)  view.findViewById(R.id.total);
+        confirmCommandBtn = (Button) view.findViewById(R.id.confirmCommandAdd);
         ((HomeActivity) getActivity()).onQueryTextChange("");
         isSearchboxVisible = false;
 
@@ -128,42 +120,14 @@ public class ProductsFragment extends Fragment {
         fragTitle = (TextView) view.findViewById(R.id.local_fragment_title);
         if (SplashActivity.tf4 != null)
             fragTitle.setTypeface(SplashActivity.tf4);
-
-        searchBox = (EditText) view.findViewById(R.id.local_fragment_search_box);
-        searchBox.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((HomeActivity) getActivity()).onQueryTextChange(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        searchIcon = (ImageView) view.findViewById(R.id.local_fragment_search_icon);
-        searchIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             mCallback.onCartAdd();
-            }
-        });
-
-
         lv = (RecyclerView) view.findViewById(R.id.localMusicList);
-        adapter = new ProductRecyclerAdapter(Product.ProtoProducts(), getContext());
+        adapter = new CartRecyclerAdapter(HomeActivity.db.getProducts(), getContext());
         mLayoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         lv.setLayoutManager(mLayoutManager2);
         lv.setItemAnimator(new DefaultItemAnimator());
         lv.setAdapter(adapter);
-
-
+        Log.d(" prix total ! ", paymentPrix + " DT");
+        totalP.setText("TOTAL PRICE: "+ paymentPrix + " DT");
 
     }
 
@@ -195,9 +159,8 @@ public class ProductsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface onProductAddToCartListener {
+    public interface confirmCommand {
         // TODO: Update argument type and name
         void onProductAddToCartClicked();
-        void onCartAdd();
     }
 }

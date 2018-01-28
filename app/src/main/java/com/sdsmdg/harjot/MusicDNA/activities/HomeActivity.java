@@ -72,6 +72,7 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.lantouzi.wheelview.WheelView;
+import com.sdsmdg.harjot.MusicDNA.SQLiteHandler;
 import com.sdsmdg.harjot.MusicDNA.adapters.playlistdialogadapter.AddToPlaylistAdapter;
 import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
 import com.sdsmdg.harjot.MusicDNA.Config;
@@ -80,6 +81,7 @@ import com.sdsmdg.harjot.MusicDNA.custombottomsheets.CustomLocalBottomSheetDialo
 import com.sdsmdg.harjot.MusicDNA.customviews.CustomLinearGradient;
 import com.sdsmdg.harjot.MusicDNA.fragments.AboutFragment.AboutFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.AllPlaylistsFragment.AllPlaylistsFragment;
+import com.sdsmdg.harjot.MusicDNA.fragments.CartFragment.CartFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.EditSongFragment.EditLocalSongFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.EqualizerFragment.EqualizerFragment;
 import com.sdsmdg.harjot.MusicDNA.fragments.FavouritesFragment.FavouritesFragment;
@@ -188,8 +190,10 @@ public class HomeActivity extends AppCompatActivity
         MenuHomeFragment.OnMenuHomeSelectedListener,
         MenuHomeFragment.onProductTypeCLickListener,
         ProductsFragment.onProductAddToCartListener,
-        ServiceCallbacks {
 
+        ServiceCallbacks {
+    public static SQLiteHandler db ;
+    public static  int q=0, totalp =0;
     public static List<LocalTrack> localTrackList = new ArrayList<>();
     public static List<LocalTrack> finalLocalSearchResultList = new ArrayList<>();
     public static List<LocalTrack> finalSelectedTracks = new ArrayList<>();
@@ -382,6 +386,7 @@ public class HomeActivity extends AppCompatActivity
     public static boolean isMenuVisible = false;
     public static boolean isMenuDetailsVisible = false;
 
+    public static boolean isCartVisible = false;
 
     public boolean isPlayerTransitioning = false;
 
@@ -434,7 +439,7 @@ public class HomeActivity extends AppCompatActivity
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        db= new SQLiteHandler(HomeActivity.this);
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         screen_width = display.getWidth();
@@ -1081,6 +1086,11 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onProductAddToCartClicked() {
 
+    }
+
+    @Override
+    public void onCartAdd() {
+         showFragment("cart");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4029,7 +4039,25 @@ public class HomeActivity extends AppCompatActivity
                     .show(newFragment)
                     .addToBackStack(null)
                     .commitAllowingStateLoss();
-        } else if (type.equals("menudetails") && !isLocalVisible) {
+        } else if (type.equals("cart") && !isCartVisible) {
+            navigationView.setCheckedItem(R.id.nav_local);
+            isCartVisible = true;
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            CartFragment newFragment = (CartFragment) fm.findFragmentByTag("cart");
+            if (newFragment == null) {
+                newFragment = new CartFragment();
+            }
+            fm.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_left,
+                            R.anim.slide_right,
+                            R.anim.slide_left,
+                            R.anim.slide_right)
+                    .add(R.id.fragContainer, newFragment, "cart")
+                    .show(newFragment)
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss();
+        }
+        else if (type.equals("menudetails") && !isLocalVisible) {
             navigationView.setCheckedItem(R.id.nav_local);
             isMenuDetailsVisible = true;
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
@@ -4327,8 +4355,7 @@ public class HomeActivity extends AppCompatActivity
                         .remove(frag)
                         .commitAllowingStateLoss();
             }
-        }
-        else if (type.equals("menu")) {
+        } else if (type.equals("menu")) {
             isMenuVisible = false;
             setTitle("Music DNA");
             navigationView.setCheckedItem(R.id.nav_home);
@@ -4339,7 +4366,20 @@ public class HomeActivity extends AppCompatActivity
                         .remove(frag)
                         .commitAllowingStateLoss();
             }
-        }  else if (type.equals("queue")) {
+        }  else if (type.equals("cart")) {
+            isMenuVisible = false;
+            setTitle("Cart");
+            navigationView.setCheckedItem(R.id.nav_home);
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            android.support.v4.app.Fragment frag = fm.findFragmentByTag("cart");
+            if (frag != null) {
+                fm.beginTransaction()
+                        .remove(frag)
+                        .commitAllowingStateLoss();
+            }
+        }
+
+        else if (type.equals("queue")) {
             isQueueVisible = false;
             navigationView.setCheckedItem(R.id.nav_home);
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
