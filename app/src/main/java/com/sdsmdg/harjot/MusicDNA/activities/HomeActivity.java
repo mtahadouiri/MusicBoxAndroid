@@ -25,11 +25,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -74,9 +72,9 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.gson.Gson;
 import com.lantouzi.wheelview.WheelView;
+import com.sdsmdg.harjot.MusicDNA.Config;
 import com.sdsmdg.harjot.MusicDNA.adapters.playlistdialogadapter.AddToPlaylistAdapter;
 import com.sdsmdg.harjot.MusicDNA.clickitemtouchlistener.ClickItemTouchListener;
-import com.sdsmdg.harjot.MusicDNA.Config;
 import com.sdsmdg.harjot.MusicDNA.custombottomsheets.CustomGeneralBottomSheetDialog;
 import com.sdsmdg.harjot.MusicDNA.custombottomsheets.CustomLocalBottomSheetDialog;
 import com.sdsmdg.harjot.MusicDNA.customviews.CustomLinearGradient;
@@ -3806,12 +3804,12 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void transferPlaylist(final List<UnifiedTrack> playList) throws IOException {
-        Thread thread = new Thread(new Runnable(){
+        final Thread thread = new Thread(new Runnable(){
             public void run() {
                 try {
                     Log.d("Connecting to server","...");
                     for (UnifiedTrack t :playList) {
-                        Socket sock = new Socket("10.0.2.2", 13267);
+                        Socket sock = new Socket("192.168.1.2", 13267);
                         OutputStream os = sock.getOutputStream();
                         DataOutputStream dos = new DataOutputStream(os);
                         Log.d("Path",t.getLocalTrack().getPath());
@@ -3836,7 +3834,6 @@ public class HomeActivity extends AppCompatActivity
                         dos.flush();
                         sock.close();
                     }
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
