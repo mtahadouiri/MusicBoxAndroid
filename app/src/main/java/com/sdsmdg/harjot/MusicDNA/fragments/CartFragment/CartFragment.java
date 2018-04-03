@@ -21,6 +21,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.sdsmdg.harjot.MusicDNA.R;
 import com.sdsmdg.harjot.MusicDNA.activities.HomeActivity;
@@ -29,6 +33,9 @@ import com.sdsmdg.harjot.MusicDNA.fragments.MenuFragment.ProductRecyclerAdapter;
 import com.sdsmdg.harjot.MusicDNA.fragments.MenuFragment.ProductsFragment;
 import com.sdsmdg.harjot.MusicDNA.models.Cart;
 import com.sdsmdg.harjot.MusicDNA.models.Product;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.sdsmdg.harjot.MusicDNA.SQLiteHandler.paymentPrix;
 
@@ -128,7 +135,34 @@ public class CartFragment extends Fragment {
         lv.setAdapter(adapter);
         Log.d(" prix total ! ", paymentPrix + " DT");
         totalP.setText("TOTAL PRICE: "+ paymentPrix + " DT");
+        confirmCommandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "http://192.168.1.8:8001/ajout.php";
+                RequestQueue queue = Volley.newRequestQueue(ctx);
+                StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                        response -> {
+                            // response
+                            Log.d("Response", response);
 
+                        },
+                        error -> {
+                            // error
+                            Log.d("Error.Response", error.toString());
+                        }
+                ) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("description", "Commde d'un utilisateur");
+                        params.put("price", ""+paymentPrix);
+                        Log.d("Params", params.values().toString());
+                        return params;
+                    }
+                };
+                queue.add(postRequest);
+            }
+        });
     }
 
     @Override

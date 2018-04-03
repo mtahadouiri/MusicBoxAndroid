@@ -201,6 +201,7 @@ public class HomeActivity extends AppCompatActivity
         ProductsFragment.onProductAddToCartListener,
 
         ServiceCallbacks {
+    public static final String HOST = "192.168.4.1";
     public static SQLiteHandler db ;
     public static  int q=0, totalp =0;
     public static List<LocalTrack> localTrackList = new ArrayList<>();
@@ -466,7 +467,7 @@ public class HomeActivity extends AppCompatActivity
         HashMap<String, String> user = database.getUserDetails();
         pseudo = user.get("pseudo");
         email = user.get("email");
-        Log.d("PSEUDO !  ", pseudo);
+//        Log.d("PSEUDO !  ", pseudo);
 
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
@@ -3844,7 +3845,7 @@ public class HomeActivity extends AppCompatActivity
                 try {
                     Log.d("Connecting to server","...");
                     for (UnifiedTrack t :playList) {
-                        Socket sock = new Socket("192.168.1.2", 13267);
+                        Socket sock = new Socket(HOST, 13267);
                         OutputStream os = sock.getOutputStream();
                         DataOutputStream dos = new DataOutputStream(os);
                         Log.d("Path",t.getLocalTrack().getPath());
@@ -5239,8 +5240,8 @@ public class HomeActivity extends AppCompatActivity
         database.deleteUsers();
 
         // Launching the login activity
-        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+      /*  Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
+        finish();*/
     }
 }
