@@ -49,6 +49,3 @@ google-services.json
 
 ### Android Patch ###
 gen-external-apklibs
-
-# Configuration file containing API Key
-app/src/main/java/com/sdsmdg/harjot/MusicDNA/Config.java
