@@ -7,7 +7,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "com.sdsmdg.harjot.MusicDNA"
+        applicationId "com.esprit.mtdev.MusicBox"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 36

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sdsmdg.harjot.MusicDNA">
+    package="com.esprit.mtdev.MusicBox">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -49,17 +49,17 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.sdsmdg.harjot.MusicDNA.notificationmanager.AudioPlayerBroadcastReceiver">
+        <receiver android:name="com.esprit.mtdev.MusicBox.notificationmanager.AudioPlayerBroadcastReceiver">
             <intent-filter>
-                <action android:name="com.sdsmdg.harjot.MusicDNA.ACTION_PLAY_PAUSE" />
-                <action android:name="com.sdsmdg.harjot.MusicDNA.ACTION_NEXT" />
-                <action android:name="com.sdsmdg.harjot.MusicDNA.ACTION_PREV" />
+                <action android:name="com.esprit.mtdev.MusicBox.ACTION_PLAY_PAUSE" />
+                <action android:name="com.esprit.mtdev.MusicBox.ACTION_NEXT" />
+                <action android:name="com.esprit.mtdev.MusicBox.ACTION_PREV" />
             </intent-filter>
         </receiver>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.sdsmdg.harjot.MusicDNA.fileprovider"
+            android:authorities="com.esprit.mtdev.MusicBox.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

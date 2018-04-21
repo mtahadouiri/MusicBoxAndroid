@@ -108,14 +108,14 @@
 
         </RelativeLayout>
 
-        <com.sdsmdg.harjot.MusicDNA.customviews.CustomProgressBar
+        <com.esprit.mtdev.MusicBox.customviews.CustomProgressBar
             android:id="@+id/customProgress"
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:visibility="invisible" />
     </FrameLayout>
 
-    <com.sdsmdg.harjot.MusicDNA.snappyrecyclerview.SnappyRecyclerView
+    <com.esprit.mtdev.MusicBox.snappyrecyclerview.SnappyRecyclerView
         android:id="@+id/visualizer_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -153,7 +153,7 @@
             android:layout_toStartOf="@+id/lyrics_icon"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:maxLines="1"
+            android:singleLine="true"
             android:paddingLeft="5dp"
             android:text="Title"
             android:textColor="#FFFFFF"
@@ -202,7 +202,7 @@
             android:src="@drawable/menu_overflow" />
     </RelativeLayout>
 
-    <com.sdsmdg.harjot.MusicDNA.visualizers.VisualizerView
+    <com.esprit.mtdev.MusicBox.visualizers.VisualizerView
         android:id="@+id/myvisualizerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
